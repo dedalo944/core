@@ -126,8 +126,9 @@ class ProceduresAgent(BaseAgent):
             tool_names='"' + '", "'.join(allowed_procedures.keys()) + '"',
             agent_scratchpad="",
             chat_history=stray.stringify_chat_history(),
-            examples=self.generate_examples(allowed_procedures),
+            #examples=self.generate_examples(allowed_procedures),
         )
+
 
         # Create the agent
         agent = (

@@ -120,12 +120,15 @@ class StrayCat:
 
         if isinstance(message, str):
             why = self.__build_why()
-            message = CatMessage(content=message, user_id=self.user_id, why=why)
-
+            message = CatMessage(
+                    content=message,
+                    user_id=self.user_id,
+                    metadata={},
+                    why=why
+                )
+            
         if save:
-            self.working_memory.update_conversation_history(
-                who="AI", message=message["content"], why=message["why"]
-            )
+            self.working_memory.update_conversation_history(who="AI", message=message["content"], why=message["why"], metadata=message.metadata)
 
         self.__send_ws_json(message.model_dump())
 
@@ -324,11 +327,13 @@ class StrayCat:
 
         # text of latest Human message
         user_message_text = self.working_memory.user_message_json.text
+        user_message_metadata = self.working_memory.user_message_json.metadata
 
         # update conversation history (Human turn)
-        self.working_memory.update_conversation_history(
-            who="Human", message=user_message_text
-        )
+        self.working_memory.update_conversation_history(who="Human", 
+                                                        message=user_message_text, 
+                                                        metadata=user_message_metadata)
+
 
         # recall episodic and declarative memories from vector collections
         #   and store them in working_memory
@@ -396,7 +401,10 @@ class StrayCat:
 
         # prepare final cat message
         final_output = CatMessage(
-            user_id=self.user_id, content=str(agent_output.output), why=why
+            user_id=self.user_id, 
+            content=str(agent_output.output), 
+            metadata={},
+            why=why
         )
 
         # run message through plugins
@@ -406,7 +414,7 @@ class StrayCat:
 
         # update conversation history (AI turn)
         self.working_memory.update_conversation_history(
-            who="AI", message=final_output.content, why=final_output.why
+            who="AI", message=final_output.content, why=final_output.why, metadata=final_output.metadata
         )
 
         return final_output

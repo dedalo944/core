@@ -32,7 +32,7 @@ class WorkingMemory(BaseModelDict):
     declarative_memories: List = []
     procedural_memories: List = []
 
-    def update_conversation_history(self, who, message, why={}):
+    def update_conversation_history(self, who, message, why={}, metadata={}):
         """Update the conversation history.
 
         The methods append to the history key the last three conversation turns.
@@ -54,6 +54,7 @@ class WorkingMemory(BaseModelDict):
                 "message": message,
                 "why": why,
                 "when": time.time(),
+                "metadata": metadata,
                 "role": Role.AI if who == "AI" else Role.Human,
             }
         )
