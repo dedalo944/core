@@ -35,6 +35,8 @@ class CatMessage(BaseModelDict):
     user_id: str
     type: str = "chat"
     why: MessageWhy | None = None
+    metadata: dict = {}
+
 
 
 class UserMessage(BaseModelDict):
@@ -47,6 +49,8 @@ class UserMessage(BaseModelDict):
 
     text: str
     user_id: str
+    metadata: dict = {}
+
 
 
 def convert_to_Langchain_message(
@@ -69,5 +73,6 @@ def convert_to_Cat_message(cat_message: AIMessage, why: MessageWhy) -> CatMessag
     return CatMessage(
         content=cat_message.content,
         user_id=cat_message.response_metadata["userId"],
+        metadata=cat_message.response_metadata,
         why=why,
     )
