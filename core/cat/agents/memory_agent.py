@@ -22,7 +22,7 @@ class MemoryAgent(BaseAgent):
 
         memory_chain = (
             final_prompt
-            | RunnableLambda(lambda x: self._log_prompt(x))
+            #| RunnableLambda(lambda x: self._log_prompt(x))
             | stray._llm
             | StrOutputParser()
         )

@@ -113,7 +113,7 @@ class ProceduresAgent(BaseAgent):
                         "agent_prompt_instructions", prompts.TOOL_PROMPT, cat=stray
                     )
                 ),
-                # *(stray.langchainfy_chat_history())
+                *(stray.langchainfy_chat_history())
             ]
         )
 
